@@ -9,7 +9,6 @@ public class ArticleController {
     int lastId = 0;
 
     public void writeArticle(){
-
         System.out.print("제목: ");
         String title = scanner.nextLine();
         System.out.print("내용: ");
@@ -31,15 +30,54 @@ public class ArticleController {
         }
     }
 
-    public void  showDetail(int id){
-
+    public void showDetail(int id){
+        Article article = checkId(id);
+        if(article == null)
+            return;
+        System.out.println("제목: " + article.getTitle());
+        System.out.println("내용: " + article.getContent());
     }
 
     public void updateArticle(int id){
-
+        Article article = checkId(id);
+        if(article == null)
+            return;
+        System.out.println("제목(기존): " + article.getTitle());
+        System.out.print("제목: ");
+        String newTitle = scanner.nextLine();
+        System.out.println("내용(기존): " + article.getContent());
+        System.out.print("내용: ");
+        String newContent = scanner.nextLine();
+        article.setTitle(newTitle);
+        article.setContent(newContent);
+        article.setModDate(LocalDateTime.now());
+        System.out.println(id + "번 게시글이 수정되었습니다.");
     }
 
     public void deleteArticle(int id){
+        Article article = checkId(id);
+        if(article == null)
+            return;
+        articleList.remove(article);
+        System.out.println(id + "번 게시글이 삭제되었습니다.");
+    }
 
+    public Article checkId(int id){
+        for(Article article : articleList){
+            if(article.getId() == id){
+                return article;
+            }
+        }
+        System.out.println(id + "번 게시글은 존재하지 않습니다.");
+        return null;
+    }
+
+    public void showCommands(){
+        System.out.println("등록: write");
+        System.out.println("목록: list");
+        System.out.println("상세보기: detail [id]");
+        System.out.println("수정: update [id]");
+        System.out.println("삭제: delete [id]");
+        System.out.println("도움말: help");
     }
 }

@@ -39,7 +39,7 @@ public class App{
                     break;
                 }
                 case("help"): {
-
+                    articleController.showCommands();
                 }
             }
         }

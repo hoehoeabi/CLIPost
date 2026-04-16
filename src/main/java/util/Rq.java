@@ -8,7 +8,12 @@ public class Rq {
         String[] cmdBits = cmd.split(" ");
         action = cmdBits[0];
         String str_id = cmdBits.length > 1 ? cmdBits[1] : "";
-        id = str_id.isEmpty() ? 0 : Integer.parseInt(str_id);
+        try{
+            id = str_id.isEmpty() ? 0 : Integer.parseInt(str_id);
+        }catch(NumberFormatException e){
+            id = 0;
+        }
+
     }
 
     public String getAction() {

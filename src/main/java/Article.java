@@ -8,8 +8,12 @@ public class Article{
     private LocalDateTime regDate;
     private LocalDateTime modDate;
 
-    public Article(){
-
+    public Article(int id, String title, String content, LocalDateTime regDate){
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.regDate = regDate;
+        this.modDate = null;
     }
 
     public int getId(){
@@ -25,20 +29,14 @@ public class Article{
         return regDate.format(AppContext.formatter);
     };
     public String getModDate(){
-        return modDate.format(AppContext.formatter);
+        return modDate == null ? "" : modDate.format(AppContext.formatter);
     }
 
-    public void setId(int id){
-        this.id = id;
-    }
     public void setTitle(String title){
         this.title= title;
     }
     public void setContent(String content){
         this.content = content;
-    }
-    public void setRegDate(LocalDateTime regDate){
-        this.regDate = regDate;
     }
     public void setModDate(LocalDateTime modDate){
         this.modDate = modDate;

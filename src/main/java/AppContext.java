@@ -8,5 +8,5 @@ public class AppContext {
     public static List<Article> articleList = new ArrayList<>();
     public static ArticleService articleService = new ArticleService();
     public static ArticleController articleController = new ArticleController();
-    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 }

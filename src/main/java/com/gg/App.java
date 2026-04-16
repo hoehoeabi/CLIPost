@@ -20,7 +20,7 @@ public class App {
             switch (rq.getActionName()) {
                 case "write" -> articleController.writeArticle();
                 case "list" -> articleController.listArticles();
-//                case "detail" -> articleController.showDetail(rq);
+                case "detail" -> articleController.showDetail(rq.getId());
 //                case "update" -> articleController.updateArticle(rq);
 //                case "delete" -> articleController.deleteArticle(rq);
                 case "exit" -> {

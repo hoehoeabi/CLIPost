@@ -2,6 +2,7 @@ package com.gg.domain.article;
 
 import com.gg.AppContext;
 import com.gg.Article;
+import com.gg.Rq;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public class ArticleService {
 
     public List<Article> getArticleList() {
         return articleRepository.getArticleList();
+    }
+
+    public Article getArticleDetail(int id) {
+        return articleRepository.getArticleDetail(id);
     }
 }

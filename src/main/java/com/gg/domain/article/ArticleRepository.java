@@ -1,9 +1,11 @@
 package com.gg.domain.article;
 
 import com.gg.Article;
+import com.gg.Rq;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ArticleRepository {
@@ -22,5 +24,13 @@ public class ArticleRepository {
 
     public List<Article> getArticleList() {
         return articles;
+    }
+
+    public Article getArticleDetail(int id) {
+        return articles.stream()
+                .filter(a -> a.getId() == id )
+                .findFirst()
+                .orElse(null);
+
     }
 }

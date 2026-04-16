@@ -1,11 +1,12 @@
 package controller;
 
 import domain.Article;
-import view.ArticleView;
-import service.ArticleService;
 import global.dto.Page;
 import global.dto.Pageable;
 import global.dto.Rq;
+import global.standard.Msg;
+import service.ArticleService;
+import view.ArticleView;
 
 import java.util.Scanner;
 import java.util.function.Consumer;
@@ -27,13 +28,13 @@ public class ArticleController {
         System.out.print("내용: ");
         String content = sc.nextLine();
         int id = articleService.write(title, content);
-        System.out.printf("%d번 게시글이 등록되었습니다.\n", id);
+        System.out.printf(Msg.ARTICLE_WRITE_SUCCESS, id);
     }
 
     public void showList(Rq rq) {
         Pageable pageable = rq.getPageable(5);
         Page<Article> articlePage = articleService.getArticles(pageable);
-        articleView.printPageResult(articlePage, "전체 목록","현재 등록된 게시글이 없습니다.");
+        articleView.printPageResult(articlePage, Msg.ARTICLE_LIST_TITLE, Msg.ARTICLE_LIST_EMPTY);
     }
 
     public void showDetail(Rq rq) {
@@ -52,22 +53,23 @@ public class ArticleController {
             String content = sc.nextLine();
 
             articleService.modify(id, title, content);
-            System.out.printf("%d번 게시글이 수정되었습니다.\n", id);
+            System.out.printf(Msg.ARTICLE_MODIFY_SUCCESS, id);
         });
     }
 
     public void doDelete(Rq rq) {
         executeWithId(rq, id -> {
             articleService.remove(id);
-            System.out.printf("%d번 게시글이 삭제되었습니다.\n", id);
+            System.out.printf(Msg.ARTICLE_DELETE_SUCCESS, id);
         });
     }
 
     public void doSearch(Rq rq) {
         String target = rq.getParam("target", "all");
         String keyword = rq.getParam("keyword", "");
+
         if (keyword.isEmpty()) {
-            System.out.println("검색어를 입력해주세요.");
+            System.out.println(Msg.INPUT_KEYWORD);
             return;
         }
 
@@ -77,12 +79,13 @@ public class ArticleController {
         String searchTarget = switch (target) {
             case "title" -> "제목";
             case "content" -> "내용";
-            default -> "제목+내용"; // "all" 포함 그 외 모든 경우 처리
+            default -> "제목+내용";
         };
 
-        String emptyMsg = String.format("'%s' : '%s'(으)로 검색된 결과가 없습니다.", searchTarget,keyword);
+        String searchResultHeader = String.format(Msg.ARTICLE_SEARCH_TITLE_FORMAT, target, keyword);
+        String emptyMsg = String.format(Msg.ARTICLE_SEARCH_NOT_FOUND, searchTarget, keyword);
 
-        articleView.printPageResult(searchPage, String.format("[%s] 검색 결과 (키워드: %s)", target, keyword),emptyMsg);
+        articleView.printPageResult(searchPage, searchResultHeader, emptyMsg);
     }
 
     public void showHelp(Rq rq) {
@@ -93,7 +96,7 @@ public class ArticleController {
         try {
             int id = rq.getIntParam("id", 0);
             if (id == 0) {
-                System.out.println("올바른 ID를 입력해주세요.");
+                System.out.println(Msg.INVALID_ID);
                 return;
             }
             action.accept(id);

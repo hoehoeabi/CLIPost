@@ -44,7 +44,7 @@ class AppTest {
         } else {
             // 만약 못 찾았다면 전체 결과에서라도 확인 (fail 방지용)
             assertThat(rs).contains("2 | 수정제목");
-            // 왜 못 찾았는지 에러 메시지에 힌트 제공
+            // 왜 못 찾았는지 에러 메시지에 힌트 제공정
             Assertions.fail("목록 출력 헤더('번호 | 제목')를 찾지 못해 substring 검증에 실패했습니다.");
         }
 

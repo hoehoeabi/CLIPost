@@ -1,6 +1,7 @@
 
 
 import controller.ArticleController;
+import view.ArticleView;
 import lombok.Getter;
 import repository.ArticleRepository;
 import service.ArticleService;
@@ -13,12 +14,14 @@ public class Container {
     private static Scanner sc;
     @Getter
     private static ArticleController articleController;
+    private static ArticleView articleView;
 
     public static void init(Scanner scanner) {
         sc = scanner;
+        articleView = new ArticleView(DATE_FORMATTER);
         ArticleRepository articleRepository = new ArticleRepository();
         ArticleService articleService = new ArticleService(articleRepository);
-        articleController = new ArticleController(articleService,sc,DATE_FORMATTER);
+        articleController = new ArticleController(articleService, articleView, sc);
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             scClose();

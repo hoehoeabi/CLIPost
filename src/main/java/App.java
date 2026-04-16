@@ -16,13 +16,13 @@ public class App {
     }
 
     private void initCommandMap(ArticleController articleController) {
-        commandMap.put("write", rq -> articleController.doWrite()); // doWrite()는 인자가 없으므로 람다 처리
+        commandMap.put("write", articleController::doWrite);
         commandMap.put("list", articleController::showList);
         commandMap.put("detail", articleController::showDetail);
         commandMap.put("update", articleController::doModify);
         commandMap.put("delete", articleController::doDelete);
         commandMap.put("search", articleController::doSearch);
-        commandMap.put("help", rq -> articleController.showHelp()); // doWrite()랑 동일
+        commandMap.put("help", articleController::showHelp);
     }
 
     public void run() {
@@ -31,8 +31,11 @@ public class App {
         initCommandMap(articleController);
 
         System.out.println("== 자바 텍스트 게시판 시작 ==");
-        articleController.showHelp();
 
+        actionLoop();
+    }
+
+    private void actionLoop() {
         while (true) {
             System.out.print("명령어: ");
             String command = sc.nextLine().trim();

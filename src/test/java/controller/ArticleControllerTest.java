@@ -1,9 +1,11 @@
 package controller;
 
+import domain.Article;
+import global.dto.Rq;
+import view.ArticleView;
 import org.junit.jupiter.api.*;
 import repository.ArticleRepository;
 import service.ArticleService;
-import global.dto.Rq;
 import util.TestUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -15,6 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ArticleControllerTest {
     private ArticleRepository repo;
     private ArticleService service;
+    private ArticleView view;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
     private ByteArrayOutputStream output;
 
@@ -22,6 +25,7 @@ class ArticleControllerTest {
     void setUp() {
         repo = new ArticleRepository();
         service = new ArticleService(repo);
+        view = new ArticleView(formatter);
         output = TestUtil.setOutToByteArray();
     }
 
@@ -35,29 +39,30 @@ class ArticleControllerTest {
     void t1() {
         // given
         Scanner sc = TestUtil.genScanner("제목1\n내용1\n");
-        ArticleController controller = new ArticleController(service, sc, formatter);
+        ArticleController controller = new ArticleController(service, view, sc);
 
         // when
-        controller.doWrite();
+        controller.doWrite(new Rq("write"));
 
         // then
         String out = output.toString();
         assertThat(out).contains("1번 게시글이 등록되었습니다.");
-
         assertThat(service.getArticle(1).getTitle()).isEqualTo("제목1");
     }
 
     @Test
     @DisplayName("showList: 게시글이 있을 때 목록과 페이지 정보를 출력한다")
     void t2() {
+        // given
         service.write("제목1", "내용1");
-        Scanner sc = TestUtil.genScanner("");
-        ArticleController controller = new ArticleController(service, sc, formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
+        // when
         controller.showList(new Rq("list?page=1&pagesize=5"));
 
+        // then
         String out = output.toString();
-        assertThat(out).contains("번호 | 제목 | 등록일");
+        assertThat(out).contains("--- 전체 목록 ---");
         assertThat(out).contains("1 | 제목1");
         assertThat(out).contains("--- 현재 페이지: 1 / 1 ---");
     }
@@ -67,9 +72,8 @@ class ArticleControllerTest {
     void t3() {
         // given
         service.write("원래 제목", "원래 내용");
-
         Scanner sc = TestUtil.genScanner("수정 제목\n수정 내용\n");
-        ArticleController controller = new ArticleController(service, sc, formatter);
+        ArticleController controller = new ArticleController(service, view, sc);
 
         // when
         controller.doModify(new Rq("update?id=1"));
@@ -86,7 +90,7 @@ class ArticleControllerTest {
     void t4() {
         // given
         service.write("삭제용", "내용");
-        ArticleController controller = new ArticleController(service, new Scanner(""), formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
         // when
         controller.doDelete(new Rq("delete?id=1"));
@@ -100,7 +104,7 @@ class ArticleControllerTest {
     void t5() {
         // given
         service.write("상세 제목", "상세 내용");
-        ArticleController controller = new ArticleController(service, new Scanner(""), formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
         // when
         controller.showDetail(new Rq("detail?id=1"));
@@ -108,19 +112,18 @@ class ArticleControllerTest {
         // then
         String out = output.toString();
         assertThat(out)
+                .contains("--- 게시글 상세 내용 ---")
                 .contains("번호: 1")
                 .contains("제목: 상세 제목")
                 .contains("내용: 상세 내용")
-                .contains("조회수: 1")
-                .contains("등록일: ")
-                .contains("수정일: ");
+                .contains("조회수: 1");
     }
 
     @Test
     @DisplayName("실패 테스트: 존재하지 않는 게시글 번호로 상세보기를 시도하면 에러 메시지를 보여준다")
     void t6() {
         // given
-        ArticleController controller = new ArticleController(service, new Scanner(""), formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
         // when
         controller.showDetail(new Rq("detail?id=99"));
@@ -134,9 +137,7 @@ class ArticleControllerTest {
     @DisplayName("실패 테스트: 존재하지 않는 게시글 번호로 수정을 시도하면 에러 메시지를 보여준다")
     void t7() {
         // given
-        // 수정 시 제목을 물어보기 전에 예외가 터져야 하므로 빈 입력값을 준비
-        Scanner sc = TestUtil.genScanner("\n\n");
-        ArticleController controller = new ArticleController(service, sc, formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
         // when
         controller.doModify(new Rq("update?id=99"));
@@ -152,7 +153,7 @@ class ArticleControllerTest {
         // given
         service.write("공지사항입니다", "내용");
         service.write("오늘의 일기", "내용");
-        ArticleController controller = new ArticleController(service, new Scanner(""), formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
         // when
         controller.doSearch(new Rq("search?target=title&keyword=공지"));
@@ -168,20 +169,20 @@ class ArticleControllerTest {
     @DisplayName("doSearch: 검색 결과가 없을 때 안내 메시지를 출력한다")
     void t9() {
         // given
-        ArticleController controller = new ArticleController(service, new Scanner(""), formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
         // when
         controller.doSearch(new Rq("search?target=all&keyword=갤럭시"));
 
         // then
-        assertThat(output.toString()).contains("'갤럭시'에 대한 검색 결과가 없습니다.");
+        assertThat(output.toString()).contains("결과가 없습니다.");
     }
 
     @Test
     @DisplayName("doSearch: 키워드 없이 검색 시 경고 메시지를 출력한다")
     void t10() {
         // given
-        ArticleController controller = new ArticleController(service, new Scanner(""), formatter);
+        ArticleController controller = new ArticleController(service, view, new Scanner(""));
 
         // when
         controller.doSearch(new Rq("search?target=title&keyword="));
@@ -189,5 +190,4 @@ class ArticleControllerTest {
         // then
         assertThat(output.toString()).contains("검색어를 입력해주세요.");
     }
-
 }

@@ -31,6 +31,7 @@ public class ArticleRepository {
     public void update(Article article, String title, String content) {
         article.setTitle(title);
         article.setContent(content);
+        article.setModifiedDate(LocalDateTime.now());
     }
 
 

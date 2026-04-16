@@ -23,7 +23,7 @@ public class ArticleController {
 
     public void listArticles() {
         List<Article> articles = articleService.getArticleList();
-        System.out.println("번호 | 제목       | 등록일");
+        System.out.println("번호 | 제목       | 최종 등록일");
         System.out.println("-----------------------------");
         //게시글 역순으로 출력
         articles.reversed()
@@ -39,6 +39,10 @@ public class ArticleController {
         System.out.printf("제목: %s\n", article.getTitle());
         System.out.printf("내용: %s\n", article.getContent());
         System.out.printf("등록일: %s\n", article.getRegDateFormatted());
+
+        if (article.getModifiedDate() != null) {
+            System.out.printf("수정일: %s\n", article.getModifiedDateFormatted());
+        }
     }
 
     public void updateArticle(int id) {

@@ -7,6 +7,7 @@ import com.gg.Rq;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.gg.AppContext.articleRepository;
 import static com.gg.AppContext.sc;
 
 public class ArticleController {
@@ -76,11 +77,24 @@ public class ArticleController {
         System.out.println("=> 게시글이 수정되었습니다.");
     }
 
-//
-//    public void updateArticle(Rq rq) {
-//    }
-//
-//    public void deleteArticle(Rq rq) {
-//    }
 
+    public void deleteArticle(int id) {
+        //예외처리) id를 입력하지 않은 경우
+        if(id == -1){
+            System.out.println("id를 입력해주세요.");
+            return;
+        }
+        Article article = articleService.getArticleDetail(id);
+
+        //예외처리) id가 존재하지 않는 경우
+        if(article == null){
+            System.out.println("해당 아이디는 존재하지 않습니다.");
+            return;
+        }
+
+        articleService.delete(article);
+
+        System.out.println("=> 게시글이 삭제되었습니다.");
+
+    }
 }

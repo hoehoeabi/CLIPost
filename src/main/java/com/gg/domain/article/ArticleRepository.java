@@ -38,4 +38,9 @@ public class ArticleRepository {
         article.setTitle(title);
         article.setContent(content);
     }
+
+
+    public void delete(Article article) {
+        articles.remove(article);
+    }
 }

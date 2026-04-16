@@ -22,7 +22,7 @@ public class App {
                 case "list" -> articleController.listArticles();
                 case "detail" -> articleController.showDetail(rq.getId());
                 case "update" -> articleController.updateArticle(rq.getId());
-//                case "delete" -> articleController.deleteArticle(rq);
+                case "delete" -> articleController.deleteArticle(rq.getId());
                 case "exit" -> {
                     systemController.actionExit();
                     return;

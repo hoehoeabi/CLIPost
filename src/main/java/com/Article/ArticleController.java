@@ -1,3 +1,7 @@
+package com.Article;
+
+import com.AppContext;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,10 +20,10 @@ public class ArticleController {
     }
 
     public void listArticles(){
-        System.out.printf(" %-3s| %-18s| %-17s| %s\n", "번호", "제목", "등록일", "수정일");
-        System.out.println("------------------------------------------------------------------------");
+        System.out.printf(" %s | %s | %s | %s\n", "번호", "제목", "등록일", "수정일");
+        System.out.println("--------------------------------");
         for(Article article : articleList.reversed()){
-            System.out.printf(" %-5d| %-20.20s| %s | %s\n", article.getId(), article.getTitle(), article.getRegDate(), article.getModDate());
+            System.out.printf(" %d | %s | %s | %s\n", article.getId(), article.getTitle(), article.getRegDate(), article.getModDate());
         }
         System.out.println();
     }
@@ -42,10 +46,10 @@ public class ArticleController {
         Article article = checkId(id);
         if(article == null)
             return;
-        System.out.println("제목(현재): " + article.getTitle());
+        System.out.println("제목(기존): " + article.getTitle());
         System.out.print("제목: ");
         String newTitle = scanner.nextLine();
-        System.out.println("내용(현재): " + article.getContent());
+        System.out.println("내용(기존): " + article.getContent());
         System.out.print("내용: ");
         String newContent = scanner.nextLine();
         articleService.update(article, newTitle, newContent);
@@ -70,7 +74,7 @@ public class ArticleController {
         System.out.println("상세보기: detail [id]");
         System.out.println("수정: update [id]");
         System.out.println("삭제: delete [id]");
-        System.out.println("도움말: help");
-        System.out.println();
+        System.out.println("도움: help");
+        System.out.println("종료: exit\n");
     }
 }

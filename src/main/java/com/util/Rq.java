@@ -1,4 +1,4 @@
-package util;
+package com.util;
 
 public class Rq {
     String action;
@@ -13,7 +13,6 @@ public class Rq {
         }catch(NumberFormatException e){
             id = 0;
         }
-
     }
 
     public String getAction() {

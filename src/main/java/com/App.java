@@ -1,4 +1,7 @@
-import util.Rq;
+package com;
+
+import com.Article.ArticleController;
+import com.util.Rq;
 
 import java.util.Scanner;
 
@@ -7,6 +10,8 @@ public class App{
     void run(){
         Scanner scanner = AppContext.scanner;
         ArticleController articleController = AppContext.articleController;
+        System.out.println("=== 자바 게시판 ===");
+        articleController.showCommands();
 
         while(true) {
             System.out.print("명령어) ");
@@ -14,10 +19,6 @@ public class App{
             Rq rq = new Rq(cmd);
 
             switch(rq.getAction()){
-                case("exit"): {
-                    System.out.println("프로그램을 종료합니다.");
-                    return;
-                }
                 case("write"): {
                     articleController.writeArticle();
                     break;
@@ -40,6 +41,10 @@ public class App{
                 }
                 case("help"): {
                     articleController.showCommands();
+                }
+                case("exit"): {
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
                 }
             }
         }

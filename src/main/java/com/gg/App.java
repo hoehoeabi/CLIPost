@@ -21,7 +21,7 @@ public class App {
                 case "write" -> articleController.writeArticle();
                 case "list" -> articleController.listArticles();
                 case "detail" -> articleController.showDetail(rq.getId());
-//                case "update" -> articleController.updateArticle(rq);
+                case "update" -> articleController.updateArticle(rq.getId());
 //                case "delete" -> articleController.deleteArticle(rq);
                 case "exit" -> {
                     systemController.actionExit();

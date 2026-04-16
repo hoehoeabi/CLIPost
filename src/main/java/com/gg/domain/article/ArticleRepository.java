@@ -33,4 +33,9 @@ public class ArticleRepository {
                 .orElse(null);
 
     }
+
+    public void update(Article article, String title, String content) {
+        article.setTitle(title);
+        article.setContent(content);
+    }
 }

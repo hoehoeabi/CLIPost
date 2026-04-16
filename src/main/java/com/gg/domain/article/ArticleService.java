@@ -24,4 +24,8 @@ public class ArticleService {
     public Article getArticleDetail(int id) {
         return articleRepository.getArticleDetail(id);
     }
+
+    public void update(Article article, String title, String content) {
+        articleRepository.update(article,title,content);
+    }
 }

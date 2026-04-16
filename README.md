@@ -141,7 +141,7 @@ src
 
 // Case 3: 검색 결과가 없는 경우
 명령어: search?target=title&keyword=스프링
-'스프링'에 대한 검색 결과가 없습니다.
+'제목' : '스프링'(으)로 검색된 결과가 없습니다.
 
 명령어: list?page=1&pagesize=3
 번호 | 제목           | 등록일

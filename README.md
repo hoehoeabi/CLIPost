@@ -68,8 +68,10 @@ src
 │       │       └── Rq.java     # URL 쿼리 파싱 및 명령어 해석 DTO
 │       ├── repository
 │       │   └── ArticleRepository.java # 데이터 스토리지 직접 접근 (In-Memory)
-│       └── service
-│           └── ArticleService.java    # 비즈니스 로직 및 페이징 가공 계층
+│       ├── service
+│       │
+│       └── util
+│            └── ArticleView.java    # 뷰
 └── test
     └── java
         ├── AppTest.java        # 전체 시나리오 통합 테스트 (AppTestRunner 활용)

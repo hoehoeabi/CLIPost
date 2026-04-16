@@ -23,7 +23,7 @@ public class AppContext {
         articleService = new ArticleService();
         articleController = new ArticleController();
         systemController = new SystemController();
-        forPrintDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        forPrintDateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }
 
 

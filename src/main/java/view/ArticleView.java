@@ -11,9 +11,9 @@ public class ArticleView {
         this.DATE_FORMATTER = DATE_FORMATTER;
     }
 
-    public void printPageResult(Page<Article> page, String title) {
+    public void printPageResult(Page<Article> page, String title, String emptyMsg) {
         if (page.getContent().isEmpty()) {
-            System.out.println("결과가 없습니다.");
+            System.out.println(emptyMsg);
             return;
         }
 

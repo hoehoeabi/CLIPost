@@ -33,7 +33,7 @@ public class ArticleController {
     public void showList(Rq rq) {
         Pageable pageable = rq.getPageable(5);
         Page<Article> articlePage = articleService.getArticles(pageable);
-        articleView.printPageResult(articlePage, "전체 목록");
+        articleView.printPageResult(articlePage, "전체 목록","현재 등록된 게시글이 없습니다.");
     }
 
     public void showDetail(Rq rq) {
@@ -73,7 +73,16 @@ public class ArticleController {
 
         Pageable pageable = rq.getPageable(5);
         Page<Article> searchPage = articleService.getSearchArticles(pageable, target, keyword);
-        articleView.printPageResult(searchPage, String.format("[%s] 검색 결과 (키워드: %s)", target, keyword));
+
+        String searchTarget = switch (target) {
+            case "title" -> "제목";
+            case "content" -> "내용";
+            default -> "제목+내용"; // "all" 포함 그 외 모든 경우 처리
+        };
+
+        String emptyMsg = String.format("'%s' : '%s'(으)로 검색된 결과가 없습니다.", searchTarget,keyword);
+
+        articleView.printPageResult(searchPage, String.format("[%s] 검색 결과 (키워드: %s)", target, keyword),emptyMsg);
     }
 
     public void showHelp(Rq rq) {

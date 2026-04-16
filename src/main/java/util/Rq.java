@@ -1,22 +1,21 @@
 package util;
 
 public class Rq {
-    private String actionPath;
-    private int id;
+    String action;
+    int id;
 
-    public Rq(String command) {
-        String[] bits = command.split(" ");
-        this.actionPath = bits[0]; // "detail"
-
-        if (bits.length > 1) {
-            try {
-                this.id = Integer.parseInt(bits[1]);
-            } catch (NumberFormatException e) {
-                this.id = 0;
-            }
-        }
+    public Rq(String cmd){
+        String[] cmdBits = cmd.split(" ");
+        action = cmdBits[0];
+        String str_id = cmdBits.length > 1 ? cmdBits[1] : "";
+        id = str_id.isEmpty() ? 0 : Integer.parseInt(str_id);
     }
 
-    public String getActionPath() { return actionPath; }
-    public int getId() { return id; }
+    public String getAction() {
+        return action;
+    }
+
+    public int getId() {
+        return id;
+    }
 }

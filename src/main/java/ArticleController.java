@@ -1,32 +1,25 @@
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ArticleController {
     Scanner scanner = AppContext.scanner;
-    List<Article> articleList = new ArrayList<>();
-    int lastId = 0;
+    List<Article> articleList = AppContext.articleList;
+    ArticleService articleService = AppContext.articleService;
 
     public void writeArticle(){
         System.out.print("제목: ");
         String title = scanner.nextLine();
         System.out.print("내용: ");
         String content = scanner.nextLine();
-        Article newArticle = new Article();
-        newArticle.setId(++lastId);
-        newArticle.setTitle(title);
-        newArticle.setContent(content);
-        newArticle.setRegDate(LocalDateTime.now());
-        articleList.add(newArticle);
+        articleService.write(title, content);
         System.out.println("게시글이 등록되었습니다.");
     }
 
     public void listArticles(){
-        System.out.println("번호 | 제목         | 등록일        ");
-        System.out.println("-----------------------------------------");
-        for(Article article : articleList){
-            System.out.printf("%-5d| %-13s| %s\n", article.getId(), article.getTitle(), article.getRegDate());
+        System.out.printf(" %-3s| %-18s| %s%n", "번호", "제목", "등록일");
+        System.out.println("---------------------------------------------");
+        for(Article article : articleList.reversed()){
+            System.out.printf(" %-5d| %-20.20s| %s\n", article.getId(), article.getTitle(), article.getRegDate());
         }
     }
 
@@ -48,9 +41,7 @@ public class ArticleController {
         System.out.println("내용(기존): " + article.getContent());
         System.out.print("내용: ");
         String newContent = scanner.nextLine();
-        article.setTitle(newTitle);
-        article.setContent(newContent);
-        article.setModDate(LocalDateTime.now());
+        articleService.update(article, newTitle, newContent);
         System.out.println(id + "번 게시글이 수정되었습니다.");
     }
 
@@ -58,18 +49,12 @@ public class ArticleController {
         Article article = checkId(id);
         if(article == null)
             return;
-        articleList.remove(article);
+        articleService.delete(article);
         System.out.println(id + "번 게시글이 삭제되었습니다.");
     }
 
     public Article checkId(int id){
-        for(Article article : articleList){
-            if(article.getId() == id){
-                return article;
-            }
-        }
-        System.out.println(id + "번 게시글은 존재하지 않습니다.");
-        return null;
+        return articleService.checkId(id);
     }
 
     public void showCommands(){

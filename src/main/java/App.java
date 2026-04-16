@@ -1,3 +1,5 @@
+import util.Rq;
+
 import java.util.Scanner;
 
 public class App{
@@ -8,12 +10,10 @@ public class App{
 
         while(true) {
             System.out.print("명령어) ");
-            String[] cmd = scanner.nextLine().trim().split(" ");
-            String action = cmd[0];
-            String str_id = cmd.length > 1 ? cmd[1] : "";
-            int id = str_id.isEmpty() ? 0 : Integer.parseInt(str_id);
+            String cmd = scanner.nextLine().trim();
+            Rq rq = new Rq(cmd);
 
-            switch(action){
+            switch(rq.getAction()){
                 case("exit"): {
                     System.out.println("프로그램을 종료합니다.");
                     return;
@@ -27,15 +27,15 @@ public class App{
                     break;
                 }
                 case("detail"): {
-                    articleController.showDetail(id);
+                    articleController.showDetail(rq.getId());
                     break;
                 }
                 case("update"): {
-                    articleController.updateArticle(id);
+                    articleController.updateArticle(rq.getId());
                     break;
                 }
                 case("delete"): {
-                    articleController.deleteArticle(id);
+                    articleController.deleteArticle(rq.getId());
                     break;
                 }
                 case("help"): {

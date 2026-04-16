@@ -1,8 +1,11 @@
 plugins {
     id 'java'
+    id 'application'
 }
-
-group = 'org.example'
+application {
+    mainClass = 'com.gg.Main'
+}
+group = 'com.gg'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -28,4 +31,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+run {
+    standardInput = System.in
 }

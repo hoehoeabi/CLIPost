@@ -1,3 +1,5 @@
+package com.gg;
+
 import lombok.Getter;
 
 @Getter

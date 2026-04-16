@@ -1,5 +1,7 @@
-import domain.article.ArticleController;
-import domain.system.SystemController;
+package com.gg;
+
+import com.gg.domain.article.ArticleController;
+import com.gg.domain.system.SystemController;
 
 import java.util.Scanner;
 
@@ -17,10 +19,10 @@ public class App {
 
             switch (rq.getActionName()) {
                 case "write" -> articleController.writeArticle();
-                case "list" -> articleController.listArticles();
-                case "detail" -> articleController.showDetail(rq);
-                case "update" -> articleController.updateArticle(rq);
-                case "delete" -> articleController.deleteArticle(rq);
+//                case "list" -> articleController.listArticles();
+//                case "detail" -> articleController.showDetail(rq);
+//                case "update" -> articleController.updateArticle(rq);
+//                case "delete" -> articleController.deleteArticle(rq);
                 case "exit" -> {
                     systemController.actionExit();
                     return;

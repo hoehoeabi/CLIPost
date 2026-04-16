@@ -1,4 +1,4 @@
-package domain.system;
+package com.gg.domain.system;
 
 public class SystemController {
     public void actionExit(){

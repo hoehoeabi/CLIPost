@@ -29,7 +29,7 @@ Java 기본 문법, 클래스 및 객체지향 설계, 사용자 입력 처리, 
 
 ## 게시글 객체 구조
 ```java
-  class Article {
+  class com.Article {
     int id;
     String title;
     String content;
@@ -45,13 +45,13 @@ Java 기본 문법, 클래스 및 객체지향 설계, 사용자 입력 처리, 
 src
     ├── main
     │   ├── java
-    │   │   ├── App.java
-    │   │   ├── Main.java
+    │   │   ├── com.App.java
+    │   │   ├── com.Main.java
     │   │   ├── domain
-    │   │   │   ├── Article.java
+    │   │   │   ├── com.Article.java
     │   │   │   └── Articles.java
     │   │   └── util
-    │   │       └── Rq.java
+    │   │       └── com.Rq.java
     │   └── resources
     └── test
         ├── java

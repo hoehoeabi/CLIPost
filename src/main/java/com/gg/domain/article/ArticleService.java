@@ -2,7 +2,6 @@ package com.gg.domain.article;
 
 import com.gg.AppContext;
 import com.gg.Article;
-import com.gg.Rq;
 
 import java.util.List;
 
@@ -21,8 +20,8 @@ public class ArticleService {
         return articleRepository.getArticleList();
     }
 
-    public Article getArticleDetail(int id) {
-        return articleRepository.getArticleDetail(id);
+    public Article findById(int id) {
+        return articleRepository.findById(id);
     }
 
     public void update(Article article, String title, String content) {

@@ -2,12 +2,8 @@ package com.gg.domain.article;
 
 import com.gg.AppContext;
 import com.gg.Article;
-import com.gg.Rq;
-
-import java.util.ArrayList;
 import java.util.List;
 
-import static com.gg.AppContext.articleRepository;
 import static com.gg.AppContext.sc;
 
 public class ArticleController {
@@ -36,18 +32,9 @@ public class ArticleController {
     }
 
     public void showDetail(int id) {
-        //예외처리) id를 입력하지 않은 경우
-        if(id == -1){
-            System.out.println("id를 입력해주세요.");
-            return;
-        }
-        Article article = articleService.getArticleDetail(id);
+        Article article = getArticleByIdOrPrintError(id);
+        if (article == null) return;
 
-        //예외처리) id가 존재하지 않는 경우
-        if(article == null){
-            System.out.println("해당 아이디는 존재하지 않습니다.");
-            return;
-        }
         System.out.printf("번호: %d\n", article.getId());
         System.out.printf("제목: %s\n", article.getTitle());
         System.out.printf("내용: %s\n", article.getContent());
@@ -55,46 +42,43 @@ public class ArticleController {
     }
 
     public void updateArticle(int id) {
-        //예외처리) id를 입력하지 않은 경우
-        if(id == -1){
-            System.out.println("id를 입력해주세요.");
-            return;
-        }
-        Article article = articleService.getArticleDetail(id);
+        Article article = getArticleByIdOrPrintError(id);
+        if (article == null) return;
 
-        //예외처리) id가 존재하지 않는 경우
-        if(article == null){
-            System.out.println("해당 아이디는 존재하지 않습니다.");
-            return;
-        }
-
-        System.out.printf("제목 (현재: %s): ",article.getTitle());
+        System.out.printf("제목 (현재: %s): ", article.getTitle());
         String title = sc.nextLine().trim();
-        System.out.printf("내용 (현재: %s): ",article.getContent());
+
+        System.out.printf("내용 (현재: %s): ", article.getContent());
         String content = sc.nextLine().trim();
 
-        articleService.update(article, title,content);
+        articleService.update(article, title, content);
         System.out.println("=> 게시글이 수정되었습니다.");
     }
 
-
     public void deleteArticle(int id) {
-        //예외처리) id를 입력하지 않은 경우
-        if(id == -1){
-            System.out.println("id를 입력해주세요.");
-            return;
-        }
-        Article article = articleService.getArticleDetail(id);
-
-        //예외처리) id가 존재하지 않는 경우
-        if(article == null){
-            System.out.println("해당 아이디는 존재하지 않습니다.");
-            return;
-        }
+        Article article = getArticleByIdOrPrintError(id);
+        if (article == null) return;
 
         articleService.delete(article);
-
         System.out.println("=> 게시글이 삭제되었습니다.");
+    }
 
+    //id 입력받는 경우 예외처리 함수
+    private Article getArticleByIdOrPrintError(int id) {
+        //예외처리) id를 입력하지 않은 경우
+        if (id == -1) {
+            System.out.println("id를 입력해주세요.");
+            return null;
+        }
+
+        Article article = articleService.findById(id);
+
+        //예외처리) id가 존재하지 않는 경우
+        if (article == null) {
+            System.out.println("해당 아이디는 존재하지 않습니다.");
+            return null;
+        }
+
+        return article;
     }
 }

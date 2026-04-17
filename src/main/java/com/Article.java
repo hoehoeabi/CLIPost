@@ -7,7 +7,6 @@ public class Article {
     String regDate;
     int count = 0;
 
-    // 이게 생성자!
     Article(int id, String title, String content, String regDate) {
         this.id = id;
         this.title = title;

@@ -1,0 +1,40 @@
+
+
+import controller.ArticleController;
+import view.ArticleView;
+import lombok.Getter;
+import repository.ArticleRepository;
+import service.ArticleService;
+
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+
+
+public class Container {
+    private static Scanner sc;
+    @Getter
+    private static ArticleController articleController;
+    private static ArticleView articleView;
+
+    public static void init(Scanner scanner) {
+        sc = scanner;
+        articleView = new ArticleView(DATE_FORMATTER);
+        ArticleRepository articleRepository = new ArticleRepository();
+        ArticleService articleService = new ArticleService(articleRepository);
+        articleController = new ArticleController(articleService, articleView, sc);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            scClose();
+            System.out.println("\n스캐너는 닫았으니 메모리 누수는 걱정 말라");
+        }));
+    }
+
+    public static void scClose() {
+        if (sc != null) {
+            sc.close();
+        }
+    }
+
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm");
+
+}
